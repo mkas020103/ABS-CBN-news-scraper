@@ -1,3 +1,7 @@
+'''
+January 23, 2024 7pm
+'''
+
 import re
 import pandas as pd
 from nltk.tokenize import RegexpTokenizer
@@ -8,11 +12,13 @@ class clean:
     def __init__(self, df):
         self.df = df
         self.tokens = []
-        self.tokenizer = RegexpTokenizer(r'\b(?:[a-zA-Z]+\d+|\d+[a-zA-Z]+)\b')
+        self.tokenizer = RegexpTokenizer(r'\w+|[^\w\s]+')
         self.patterns = [
             [r'<a href="/"share',''],
             [r'share$',''],
+            [r'<br',''],
             [r'&mdash;','—'],
+            [r';',''],
             [r'&#;','\''],
             [r'&#39;','\''],    
             [r'&quot','"'],
@@ -21,6 +27,7 @@ class clean:
             [r'</strong',''],
         ]
         self.preprocess()
+        self.tokenize()
         
         
     def preprocess(self):
@@ -28,13 +35,11 @@ class clean:
             for pattern in self.patterns:
                 row['contents'] = row['contents'].strip().lower()
                 row['contents'] = re.sub(pattern[0], pattern[1], row['contents'])
-        self.tokenize()
         
     def substitute(self, list_of_text):
         for _, row in self.df:
             for text in list_of_text:
                 row['contents'] = re.sub(text[0], text[1], row['contents'])
-        self.tokenize()
         
     def find(self, pattern):
         self.expression = r'\b{}\b'.format(pattern)  # Regular expression pattern to match the word or words
@@ -55,3 +60,4 @@ class clean:
             self.df.to_csv(csv_file_path)
         else:
             print('Must be a valid filename that ends with .csv')
+            

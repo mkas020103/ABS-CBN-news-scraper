@@ -1,11 +1,11 @@
 '''
-January 4, 2024 8pm
+January 23, 2024 7pm
 '''
 
 import requests
 import re
 import pandas as pd
-from nltk.tokenize import word_tokenize
+from nltk.tokenize import RegexpTokenizer
 import os
 
 class scrape:
@@ -33,7 +33,6 @@ class scrape:
     Methods:
         -self.html_content_scrape()
         -self.scrape_essential_content()
-        -self.debugging()
         -self.build_df()
     '''
     def __init__(self, sites):
@@ -54,11 +53,15 @@ class scrape:
         self.authors = []
         self.contents = []
         self.dates = []
+        self.tokens = []
         
         # Call methods that scrapes, pre-clean, build the final dataframe
         self.html_content_scrape()
         self.scrape_essential_content()
-        self.tokens = [word_tokenize(text) for text in self.contents]
+        self.tokenizer = RegexpTokenizer(r'\w+|[^\w\s]+')
+        # Tokenize the contents and build the dataframe
+        self.contents = [text.strip() for text in self.contents]
+        self.tokens = [self.tokenizer.tokenize(text) for text in self.contents]
         self.build_df()
         
     def html_content_scrape(self):
@@ -76,41 +79,16 @@ class scrape:
             else:
                 self.html_content.append("Not an ABSCBN site.")
                 
-    '''def scrape_essential_content(self):
-        # Regular expression to each crucial data
-        news_title_pattern = r'<h1 class="news-title">(.*?)</h1>'
-        author_pattern = r'<span class="editor">(.*?)</span>'
-        content_pattern = r'<p(?:\s+style)?>\s*(.*?)\s*</p>'
-        date_pattern = r'<span class="date-posted">(.*?)</span>'
-        
-        for content in self.html_content:
-            # Search for a match in the HTML with their respective regular expression
-            if not content.startswith('Status code erorr:') or not content.startswith('Not an ABSCBN site.'):
-                news_title_match = re.search(news_title_pattern, content)
-                author_match = re.search(author_pattern, content)
-                content_match = re.findall(content_pattern, content, re.DOTALL)
-                date_match = re.search(date_pattern, content)
-            else:
-                self.title.append(None)
-                self.authors.append(None)
-                self.contents.append(None)
-                self.dates.append(None)
-                continue
-            
-            # Check if there was content found for each data then append
-            self.title.append(news_title_match.group(1) if news_title_match else '**No News Title Found**')
-            self.authors.append(author_match.group(1) if author_match else '**No Author Found**')
-            self.dates.append(date_match.group(1) if date_match else '**No Date Found**')
-
-            if content_match:
-                all_content = ' '.join(content_match)
-                self.contents.append(all_content)
-            else:
-                self.contents.append('**No Content Found**')'''
-
-                
     def scrape_essential_content(self):
         for content in self.html_content:
+            # Check if the content has a valid data to scrape
+            if content.startswith('Status code erorr:'):
+                self.title.append('**No News Title Found**')
+                self.authors.append('**No Author Found**')
+                self.dates.append('**No Date Found**')
+                self.contents.append('**No Content Found**')
+                break
+            
             # Initialize string for each important html content
             title = ''
             authors = ''
@@ -123,50 +101,53 @@ class scrape:
             is_author = False
             is_content = False
             is_date = False
+            number_dates = 1
             
             # Iterate over the whole html content while saving the important parts
             for char in content:
-                # If a character is probably a closing to a code in html
-                if char == '>':
-                    start_date_match = temp_str[-len('<span class="date-posted"'):]
-                    start_content_match = temp_str[-len('<p'):]
-                    start_author_match = temp_str[-len('<span class="editor"'):]
-                    start_title_match = temp_str[-len('<h1 class="news-title"'):]
-                    end_date_match = temp_str[-len('</span'):]
-                    end_content_match = contents[-len('</p'):]
-                    end_author_match = temp_str[-len('</span'):]
-                    end_title_match = temp_str[-len('</h1'):]
-                    
-                    # If a start of an important html content
-                    if start_title_match == '<h1 class="news-title"':
-                        is_title = not is_title
-                    if start_author_match == '<span class="editor"':
-                        is_author = not is_author
-                    if start_content_match == '<p':
-                        is_content= not is_content
-                        if end_content_match == '</p':
-                            contents = contents[:len(contents)-3]
-                    if start_date_match == '<span class="editor"':
-                        is_date= not is_date
+                # If a probable important html content
+                if char  == '>' or is_title or is_author or is_content or is_date:
+                    # If a character is probably a closing to a code in html
+                    if char == '>':
+                        start_date_match = temp_str[-len('<span class="date-posted"'):]
+                        start_content_match = temp_str[-len('<p'):]
+                        start_author_match = temp_str[-len('<span class="editor"'):]
+                        start_title_match = temp_str[-len('<h1 class="news-title"'):]
+                        end_date_match = dates[-len('</span'):]
+                        end_content_match = contents[-len('</p'):]
+                        end_author_match = temp_str[-len('</span'):]
+                        end_title_match = temp_str[-len('</h1'):]
                         
-                    # If an end of an important html content, append then re-initialize
-                    if start_title_match == True and end_title_match == '</h1':
-                        is_title = not is_title
-                    if start_author_match == True and end_author_match == '</span':
-                        is_author = not is_author
-                    if start_date_match == True and end_date_match == '</span':
-                        is_date= not is_date
-                        
-                # If a character is an important html content, append
-                elif is_title:
-                    title += char
-                elif is_author:
-                    authors += char
-                elif is_content:
-                    contents += char
-                elif is_date:
-                    dates += char
-                    
+                        # If a start of an important html content
+                        if start_title_match == '<h1 class="news-title"':
+                            is_title = not is_title
+                        if start_author_match == '<span class="editor"':
+                            is_author = not is_author
+                        if start_content_match == '<p':
+                            is_content= not is_content
+                            if end_content_match == '</p':
+                                contents = contents[:len(contents)-3]
+                        if start_date_match == '<span class="date-posted"'and number_dates <= 2:
+                            is_date= not is_date
+                            number_dates += 1
+                            if end_date_match == '</span':
+                                dates = dates[:len(dates)-6]
+                            
+                        # If an end of an important html content, append then re-initialize
+                        if start_title_match == True and end_title_match == '</h1':
+                            is_title = not is_title
+                        if start_author_match == True and end_author_match == '</span':
+                            is_author = not is_author
+                            
+                    # If a character is an important html content, append
+                    elif is_title:
+                        title += char
+                    elif is_author:
+                        authors += char
+                    elif is_content:
+                        contents += char
+                    elif is_date:
+                        dates += char
                 # Else append the character
                 else:
                     temp_str += char
@@ -174,8 +155,8 @@ class scrape:
             # Check if there was content found for each data then append
             self.title.append(title[:len(title)-4] if title else '**No News Title Found**')
             self.authors.append(authors[:len(authors)-6] if authors else '**No Author Found**')
-            self.dates.append(dates[:len(dates)-4] if dates else '**No Date Found**')
-            self.contents.append(contents if contents else '**No Content Found**')       
+            self.dates.append(dates if dates else '**No Date Found**')
+            self.contents.append(contents if contents else '**No Content Found**')  
                     
                 
     def build_df(self):
@@ -190,8 +171,8 @@ class scrape:
         }
         self.df = pd.DataFrame(data)
                 
-                
     def save(self, filename):
+        # If the filename is valid, save into csv file
         if filename.endswith('.csv') and all(char not in '&*^%$#@!\'"\\/' for char in filename):
             # Get the current working directory
             current_path = os.getcwd()
