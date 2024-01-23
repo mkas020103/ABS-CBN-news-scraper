@@ -1,0 +1,36 @@
+<!doctype html>
+<html>
+<head>
+    <title>{% block title %}{% endblock %}</title>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='style.css')}}">
+
+</head>
+<body>
+    <header>
+        <nav>
+            <div class="header">
+                <img src="{{ url_for('static', filename='images/extracto_logo.png') }}" class="logo" alt="Logo">
+                <h1>XTRACTO</h1>
+            </div>
+            <ul>
+                <li><a href="#">Home</a></li>
+                <li><a href="#">Tutorials</a></li>
+                <li><a href="#">About Us</a></li>
+            </ul>
+        </nav>
+    </header>
+        {% block content %} 
+        {% endblock %}        
+        <div class="dashed-box">
+            {% block box_content %} 
+            {% endblock %}
+        </div>
+        <div>
+        <p class="privacy">Data privacy is our top priority - Your information will never be sold or shared. For additional details, refer to our <a href="#">Privacy Policy.</a></p>
+        </div>
+        {% block content2 %} 
+        {% endblock %}
+</body>
+</html>
+
+

@@ -1,0 +1,71 @@
+{% extends "base.html" %}
+
+{% block title %}Extracto{% endblock %}
+
+<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='style.css')}}">
+
+{% block content %}
+<div class="index-content1">
+    <h1>Free Webscraping Tool - Covert Website to Text</h1>
+    <p>With just three easy steps, extract data from ABS-CBN News website and turn it into an editable CSV file by using
+        Extrato's web scraping tool.
+    </p>
+</div>
+{% endblock %}
+
+{% block box_content %} 
+<script src="https://kit.fontawesome.com/7a648fcb12.js" crossorigin="anonymous"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+
+    <div class="in-box-content">
+        <h1>Enter any ABS-CBN News Article URL</h1>
+        <p> This tool extracts text exclusively from ABS-CBN news webpages, providing well-formatted 
+            results that can be downloaded as a .csv file. </p>
+        <form> 
+            <input type="text" placeholder="https://news.abs-cbn.com/" /> 
+            <button class="scrape-button" method = 'POST'>Scrape</button>
+        </form>
+    </div>
+<div class="index-content2">
+    <h1>or</h1>
+        <form> 
+            <h1>Open any CSV File </h1>
+            <br>
+            <label for="file"><i class="fa-solid fa-plus"></i></label>
+                <input type="file" name="" id="file" onchange="displayFileName(this)">
+                    <div id="selectedFileName"></div>
+                </input>
+            <button class="scrape-button" method = 'POST'>Scrape</button>
+        </form>
+        <script>
+            function displayFileName(input) {
+                const selectedFileName = document.getElementById('selectedFileName');
+                if (input.files.length > 0) {
+                    selectedFileName.textContent = `${input.files[0].name}`;
+                } else {
+                    selectedFileName.textContent = '';
+                }
+            }
+        </script>
+</div>
+{% endblock %}
+
+{% block content2 %} 
+<div class="row ">
+    <div class="column">
+        <h2>1. Enter any ABS-CBN News Article URL</h2>
+        <br>
+        <p>Enter any URL or open any CSV file which you want to parse.</p>
+    </div>
+    <div class="column">
+        <h2>2. Extract Data from ABS-CBN Website</h2>
+        <br>
+        <p>Our web scraping tool will analyze the webpage content and efficiently extract text directly </p>
+    </div>
+    <div class="column">
+        <h2>3. Download CSV file.</h2>
+        <br>
+        <p>Download the results in .CSV file within seconds.</p>    
+    </div>    
+</div>                     
+{% endblock %}
