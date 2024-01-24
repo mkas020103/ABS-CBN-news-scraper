@@ -2,7 +2,7 @@
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    font-family: 'Poppins', serif;
+    font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
 }
 
 nav{
@@ -10,7 +10,7 @@ nav{
     display: flex;
     align-items: center;
     justify-content: space-between;
-    background-color: rgb(184, 181, 181);
+    background-color: #1b4242;
 
 }
 
@@ -23,12 +23,14 @@ nav{
 }
 
 .logo{
-    width: 100px;
+    width: 60px;
+    margin: 10px;
 }
 
 nav h1{
-    font-family: 'Poppins', sans-serif;
+    font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
     display: flex;
+    color: #fff;
 }
 
 nav ul li{
@@ -39,17 +41,17 @@ nav ul li{
 }
 
 nav ul li a {
-    color: #000000;
+    color: #fff;
     margin: 20px 25px;
     text-decoration: none;
-    font-weight: 700;
+    font-weight: 600;
     font-size: large;
-    
+    font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
 }
 
 .dashed-box{
     border: 2px dashed #333; 
-    margin: 50px 100px; 
+    margin: 20px 100px; 
     padding: 20px;
 }
 
@@ -94,17 +96,17 @@ div p.privacy{
 
 .in-box-content form{
     margin: auto; 
-    color: rgb(184, 181, 181); 
     width: 900px; 
     height: 50px; 
     display: flex;
     text-align: center;
+    color: #fff;
 }
 
 .in-box-content input{
     flex: 1; 
     padding: 10px; 
-    font-size: larger
+    font-size: larger;
 }
 
 .scrape-button{
@@ -112,6 +114,8 @@ div p.privacy{
     width: auto;
     font-size: small;
     font-weight: 500;
+    color: #fff;
+    background-color: #1b4242;
 }
 
 
@@ -131,11 +135,10 @@ div p.privacy{
     margin-left: 10px;
     align-self: center; 
     padding: 10px 20px; 
-    color: #0c0b0b;
+    color: #fff;
     cursor: pointer;
-    border: 1px solid rgb(184, 181, 181);
     border-radius: 5px;
-    background-color: rgb(184, 181, 181);
+    background-color: #1b4242;
 }
 
 .index-content2 form input{
@@ -147,15 +150,24 @@ div p.privacy{
     float: left;
     width: 33.33%;
     padding: 10px;
-    text-align: center;
+    text-align: left;
+    margin: 0px;
   }
   
+.row{
+    margin-left: 80px;
+}
+
+.bi{
+    padding-right: 10px;
+    font-size: xx-large;
+}
+
 .row::after {
     content: "";
     display: table;
     clear: both;
 }
-
 
 @media screen and (max-width:600px) {
     .column {
@@ -194,25 +206,137 @@ div p.privacy{
     width: 200px;
 }
 
-.search{
-    text-align: center;
-}
-
-.customize{
-    text-align: center;
-    padding: 10px;
-    margin: auto; 
-    margin-top: 10px;
-    color: slategray; 
-    width: 900px; 
-    height: 50px; 
+.upper-function-container{
+    justify-content: space-around;
     display: flex;
-    text-align: start;
-    background-color: rgb(184, 181, 181);
-    border-radius: 5px;
-    border: none;
+    margin-top: 50px;
+    height: 30px;
 }
 
+.functions{
+    display: flex;
+    padding-left: 5px;
+}
 
+.functions input{
+    color: black;
+    font-size: medium;
+    padding-left: 5px;
+    background-color: #d8d8d8;
+    border: transparent;
+}
+
+.functions h3{
+    padding-top: 5px;
+    padding-right: 5px;
+}
+
+.functions button{
+    background-color: #5c8374;
+    color: #fff;
+    border:none;
+    padding-left: 20px;
+    padding-right: 20px;
+    cursor: pointer;
+}
+
+.save-option-container{
+    display: flex;
+    height: 30px;
+}
+
+.save-option{
+    display: flex;
+    margin: auto;
+    height: 30px;
+}
+
+.save-option h3{
+    padding-top: 5px;
+    padding-right: 5px;
+}
+
+.save-option input{
+    color: black;
+    font-size: medium;
+    padding-left: 5px;
+    background-color: #d8d8d8;
+    border: transparent;
+}
+
+.save-option button{
+    background-color: #5c8374;
+    color: #fff;
+    border:none;
+    padding-left: 20px;
+    padding-right: 20px;
+    cursor: pointer;
+    margin-left: 10px;
+}
+
+.privacy-policy{
+    margin: 5px;
+}
+
+.privacy-policy-header{
+    text-align: center;
+    margin-bottom: 20px;
+    margin-top: 10px;
+}
+
+.privacy-policy-content{
+    text-align: left;
+    margin-left: 30px;
+    padding-bottom: 10px;
+}
+
+.privacy-policy-content h3{
+    margin-bottom: 10px;
+    margin-top: 10px;
+    font-size: larger;
+}
+
+.privacy-policy-content ul{
+    margin-bottom: 20px;
+    margin-top: 10px;
+    margin-left: 30px;
+}
+
+.tutorial{
+    margin: 40px;
+}
+
+.tutorial-header{
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.tutorial p{
+    margin-bottom: 20px;
+    font-size: large;
+}
+
+.tutorial h2{
+    margin-bottom: 10px;
+}
+
+.tutorial ol{
+    margin-bottom: 10px;
+    margin-left: 30px;
+}
+
+.tutorial ol li{
+    margin-bottom: 10px;
+    margin-left: 30px;
+}
+
+.tutorial ol li h3{
+    margin-bottom: 10px;
+}
+
+.tutorial ul{
+    margin-bottom: 10px;
+    margin-left: 20px;
+}
 
 
