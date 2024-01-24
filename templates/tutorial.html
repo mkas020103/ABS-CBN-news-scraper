@@ -1,0 +1,61 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="tutorial">
+    <div class="tutorial-header">
+        <h1>Tutorial</h1>
+    </div>
+    <div class="tutorial-content">
+        <p>Welcome to Extracto, your go-to tool for effortless data extraction and customization. 
+            Follow these simple steps to make the most of our features : </p>
+        <h2>Step 1 : Enter URL or Open CSV File</h2>
+        <ol>
+            <li>
+                <h3>Enter ABS-CBN URL :</h3>
+                <ul>
+                    <li>Paste the link of the ABS-CBN News article you want to extract data from. </li>
+                    <li>Example : 'https://www.abs-cbn.com/news/article123 </li>
+                </ul>
+            </li>
+            <li>
+                <h3>Open CSV File :</h3>
+                <ul>
+                    <li>Alternatively, upload an existing CSV file to extract data. </li>
+                    <li>Note : Ensure the first column of the CSV file contains URLs.</li>
+                </ul>
+            </li>
+        </ol>
+        <h2>Step 2 : Extract Data</h2>
+        <p>Click on the "Extract Data" button, and our 
+            web scraping tool will efficiently analyze the webpage content, extracting relevant text. </p>
+        <h2>Step 3 : Customize Results</h2>
+        <ol>
+            <li>
+                <h3>Find Words :</h3>
+                <ul>
+                    <li>Search for specific words in the extracted data.</li>
+                    <li>Example : "Coronavirus, Technology, Environment</li>
+                </ul>
+            </li>
+            <li>
+                <h3>Substitute Words : </h3>
+                <ul>
+                    <li>Replace certain words throughout the data. </li>
+                    <li>Example : (Mother : Father), (Cat Dog)</li>
+                </ul>
+            </li>
+        </ol>
+        <h2>Step 4 : Download Results.</h2>
+        <p>Click on the "Download CSV" button to save the extracted and customized data as a .csv file. </p>
+        <h2>Step 5 : Additional Options</h2>
+        <ul>
+            <li>Copy to Clipboard : Copy the extracted data for quick use</li>
+            <li>Data Privacy : Your information is secure and will never be sold or shared. Privacy Policy </li>
+        </ul>
+        <br>
+        <p>That's it! Explore the power of Extracto in simplifying your data extraction and customization needs.</p>
+
+        
+    </div>
+</div>
+{% endblock%}
