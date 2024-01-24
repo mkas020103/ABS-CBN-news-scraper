@@ -1,30 +1,29 @@
 {% extends "base.html" %}
 
 {% block box_content %}
-<div class="wait">
-    <p>Extracting...Please Wait</p>
-</div>
+<div class="dashed-box">
+    <div class="wait">
+        <p>Extracting...Please Wait</p>
+    </div>
+</div>    
 {% endblock %}
 
 {% block content2 %} 
-    <div class="footer">
-        <ol>
-            <li>
-                <h2>Enter any ABS-CBN News Article URL.</h2>
-                <br>
-                <p>Enter any URL or open any CSV file which you want to parse.</p>
-            </li>
-            <li>
-                <h2>Extract Data from ABS-CBN Website.</h2>
-                <br>
-                <p>Our web scraping tool will analyze the webpage content </p>
-                <p>and efficiently extract text directly</p>
-            </li>
-            <li>
-                <h2>Download CSV file.</h2>
-                <br>
-                <p>Download the results in .CSV file within seconds.</p>                   
-            </li>
-        </ol>
+<div class="row ">
+    <div class="column">
+        <h2>1. Enter any ABS-CBN News Article URL</h2>
+        <br>
+        <p>Enter any URL or open any CSV file which you want to parse.</p>
     </div>
+    <div class="column">
+        <h2>2. Extract Data from ABS-CBN Website</h2>
+        <br>
+        <p>Our web scraping tool will analyze the webpage content and efficiently extract text directly </p>
+    </div>
+    <div class="column">
+        <h2>3. Download CSV file.</h2>
+        <br>
+        <p>Download the results in .CSV file within seconds.</p>    
+    </div>    
+</div> 
 {% endblock %}
