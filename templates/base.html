@@ -9,27 +9,34 @@
     <header>
         <nav>
             <div class="header">
-                <img src="{{ url_for('static', filename='images/extracto_logo.png') }}" class="logo" alt="Logo">
+                <img src="{{ url_for('static', filename='images/logo.png') }}" class="logo" alt="Logo">
                 <h1>XTRACTO</h1>
             </div>
-            <ul>
-                <li><a href="#">Home</a></li>
-                <li><a href="#">Tutorials</a></li>
-                <li><a href="#">About Us</a></li>
-            </ul>
+            <div class="text-header">
+                <ul>
+                    <li><a href="{{ url_for('home') }}">Home</a></li>
+                    <li><a href="{{ url_for('tutorial') }}">Tutorials</a></li>
+                    <li><a href="{{ url_for('aboutus') }}">About Us</a></li>
+                    <li><a href="{{ url_for('privacy') }}">Privacy Policy</a></li>
+                </ul>
+            </div>
         </nav>
     </header>
         {% block content %} 
         {% endblock %}        
-        <div class="dashed-box">
-            {% block box_content %} 
-            {% endblock %}
-        </div>
+
+        {% block box_content %} 
+        {% endblock %}
+
+        {% block after_box_content %} 
+        {% endblock %}
+
         <div>
-        <p class="privacy">Data privacy is our top priority - Your information will never be sold or shared. For additional details, refer to our <a href="#">Privacy Policy.</a></p>
+        <p class="privacy">Data privacy is our top priority - Your information will never be sold or shared. For additional details, refer to our <a href="{{ url_for('privacy') }}">Privacy Policy.</a></p>
         </div>
         {% block content2 %} 
         {% endblock %}
+
 </body>
 </html>
 
