@@ -21,9 +21,9 @@
         <h1>Enter any ABS-CBN News Article URL</h1>
         <p> This tool extracts text exclusively from ABS-CBN news webpages, providing well-formatted 
             results that can be downloaded as a .csv file. </p>
-        <form id="sitesform" method="post" action="/scrape"> 
-            <input type="text" placeholder="https://news.abs-cbn.com/" /> 
-            <button class="scrape-button" method = 'post' name="extract-button" onclick="submitForm()">Extract</button>
+        <form id="sitesform" method="get" action="/scrape"> 
+            <input type="text" name="sites_to_scrapes" autofocus autocomplete="off" placeholder="https://news.abs-cbn.com/" /> 
+            <button class="scrape-button" type="submit">Extract</button>
         </form>
     </div>
     <div class="index-content2">
@@ -44,24 +44,6 @@
                     } else {
                         selectedFileName.textContent = '';
                     }
-                }
-            </script>
-            <script>
-                function submitForm() {
-                    // Get form data
-                    var formData = new FormData(document.getElementById('sitesform'));
-            
-                    // Send POST request to Flask backend
-                    fetch('/scrape', {
-                        method: 'POST',
-                        body: formData
-                    })
-                    .then(response => response.json())
-                    .then(data => {
-                        // Update frontend with scraped data
-                        document.getElementById('clean-result').innerHTML = JSON.stringify(data);
-                    })
-                    .catch(error => console.error('Error:', error));
                 }
             </script>
     </div>

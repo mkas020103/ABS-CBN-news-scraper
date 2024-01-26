@@ -18,27 +18,13 @@ app = Flask(__name__)
 def home():
     return render_template('index.html')
 
-@app.route('/scrape', methods=['POST'])
+@app.route('/scrape', methods=['POST','GET'])
 def scraper():
-    if request.method == 'POST':
-        sites = request.form.get('site')  # get the csv or link from the form in index.html 
-        print(type(sites))
+    if request.method == 'POST' or request.method == 'GET':
+        sites = request.args.get('sites_to_scrapes')  # get the csv or link from the form in index.html 
         news_scraper = scrape(sites)  # scrape the news using the scrape class
         scraped_data = news_scraper.df.to_dict(orient='records')  # dataframe to dictionary
-        return jsonify(scraped_data)  # return the scraped_data as JSON
-
-'''
-def main():
-    # scrape dataframe 
-    x = scrape('sites.csv') #change into a csv file or site link
-    x.save('uncleaned.csv')
-    
-    # clean dataframe
-    y_data = copy.copy(x.df)
-    y = clean(y_data)
-    y.save('cleaned.csv')
-
-'''
+        return render_template("functions.html", data=jsonify(scraped_data))        #jsonify(scraped_data)  # return the scraped_data as JSON
 
 @app.route('/extract')
 def extract():
