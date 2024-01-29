@@ -21,7 +21,7 @@
         <h1>Enter any ABS-CBN News Article URL</h1>
         <p> This tool extracts text exclusively from ABS-CBN news webpages, providing well-formatted 
             results that can be downloaded as a .csv file. </p>
-        <form id="sitesform" method="get" action="/scrape"> 
+        <form id="sitesform" method="post" action="/scrape"> 
             <input type="text" name="sites_to_scrapes" autofocus autocomplete="off" placeholder="https://news.abs-cbn.com/" /> 
             <button class="scrape-button" type="submit">Extract</button>
         </form>
@@ -32,9 +32,10 @@
                 <h1>Open any CSV File </h1>
                 <br>
                 <label for="site"><i class="fa-solid fa-plus"></i></label>
-                    <input type="file" name="site" id="site" onchange="displayFileName(this)">
+                    <input type="file" name="sites_to_scrapes" id="site" onchange="displayFileName(this)">
                         <div id="selectedFileName"></div>
                     </input>
+                    <button class="scrape-button" type="submit">Extract</button>
             </form>
             <script>
                 function displayFileName(input) {

@@ -182,7 +182,7 @@ div p.privacy{
 }
 
 .clean-result{
-    padding: 150px;
+    padding: 0px;
 }
 
 .clean-buttons{
@@ -337,6 +337,23 @@ div p.privacy{
 .tutorial ul{
     margin-bottom: 10px;
     margin-left: 20px;
+}
+
+
+.clean-result table {
+    border-collapse: collapse;
+    width: 100%;
+}
+
+.clean-result th, td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: left;
+    display: flex;
+}
+
+.clean-result th {
+    background-color: #5c8374;
 }
 
 

@@ -25,6 +25,16 @@
 {% block box_content %} 
 <div class="dashed-box">
     <div class="clean-result">
+        <table border="1">
+            {% for key, value in data[0].items() %}
+            <tr>
+                <th>{{ key }}</th>
+                {% for row in data %}
+                <td>{{ row[key] }}</td>
+                {% endfor %}
+            </tr>
+            {% endfor %}
+        </table>
     </div>
 </div>
 {% endblock %}
