@@ -14,7 +14,7 @@ from cleaner import clean
 
 app = Flask(__name__)
 
-news_scraper = None
+news_cleaner = None
 
 @app.route('/') 
 def home():
@@ -24,10 +24,10 @@ def home():
 def scraper():
     if request.method == 'POST' or request.method == 'GET':
         sites = request.form.get('sites_to_scrapes')  # get the csv or link from the form in index.html 
-        global news_scraper 
         news_scraper = scrape(sites)  # scrape the news using the scrape class
-        scraped_data = news_scraper.return_copy().to_dict(orient='records')  # dataframe to dictionary
-        return render_template("functions.html", data=scraped_data)
+        global news_cleaner
+        news_cleaner = clean(news_scraper.return_copy())
+        return render_template("functions.html", data=news_cleaner.df.to_dict(orient='records'))
         
 @app.route('/extract')
 def extract():
