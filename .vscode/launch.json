@@ -5,7 +5,7 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "name": "Python: scraper.py",
+            "name": "Python: cleaner.py",
             "type": "python",
             "request": "launch",
             "program": "${file}",

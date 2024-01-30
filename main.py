@@ -57,3 +57,15 @@ if __name__ == '__main__':
     app.run(debug=True)
     
 
+'''
+            
+x = scrape('sites.csv')
+x.save('uncleaned.csv')
+
+y = x.return_copy()
+
+z = clean(y)
+
+print(z.df.head())
+z.save('cleaned.csv')
+'''

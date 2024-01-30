@@ -8,15 +8,36 @@ from nltk.tokenize import RegexpTokenizer
 from scraper import scrape
 import os
 
+'''
+[r'',''],
+            [r'',''],
+            [r'',''],
+            [r'',''],
+            [r'',''],
+            [r'',''],
+            [r'',''],
+            [r'',''],
+            [r'',''],
+            [r'',''],
+            [r'',''],
+            [r'',''],
+'''
+
 class clean:
     def __init__(self, df):
         self.df = df
         self.tokens = []
         self.tokenizer = RegexpTokenizer(r'\w+|[^\w\s]+')
         self.patterns = [
-            [r'<a href="/"share',''],
-            [r'share$',''],
+            [r'id.*\\\\\\',''],
+            [r'/span',''],
+            [r'\\u003c',''],
+            [r'/em',''],
             [r'<br',''],
+            [r'\\u003ekj',''],
+            [r'u003e',''],
+            [r'"',''],
+            [r'\\u0026','\''],
             [r'&mdash;','—'],
             [r';',''],
             [r'&#;','\''],
@@ -25,6 +46,22 @@ class clean:
             [r'.&nbsp;',','],
             [r'<strong',''],
             [r'</strong',''],
+            [r'\\',''],
+            [r'/pu',''],
+            [r'/p',''],
+            [r'quot',''],
+            [r'\bbr\b',''],
+            [r'\'ldquo',''],
+            [r'\'lde','T'],
+            [r'\'',''],
+            [r'rsquo',''],
+            [r'rdquo',''],
+            [r'#39',''],
+            [r',',''],
+            [r'\.',''],
+            [r'\?',''],
+            [r'\!',''],
+            [r'--',''],
         ]
         self.preprocess()
         self.tokenize()
@@ -61,3 +98,12 @@ class clean:
         else:
             print('Must be a valid filename that ends with .csv')
             
+x = scrape('sites.csv')
+x.save('uncleaned.csv')
+
+y = x.return_copy()
+
+z = clean(y)
+
+print(z.df.head())
+z.save('cleaned.csv')
