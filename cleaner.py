@@ -5,8 +5,22 @@ January 23, 2024 7pm
 import re
 import pandas as pd
 from nltk.tokenize import RegexpTokenizer
-from scraper import scrape
 import os
+
+'''
+[r'',''],
+            [r'',''],
+            [r'',''],
+            [r'',''],
+            [r'',''],
+            [r'',''],
+            [r'',''],
+            [r'',''],
+            [r'',''],
+            [r'',''],
+            [r'',''],
+            [r'',''],
+'''
 
 class clean:
     def __init__(self, df):
@@ -14,9 +28,15 @@ class clean:
         self.tokens = []
         self.tokenizer = RegexpTokenizer(r'\w+|[^\w\s]+')
         self.patterns = [
-            [r'<a href="/"share',''],
-            [r'share$',''],
+            [r'id.*\\\\\\',''],
+            [r'/span',''],
+            [r'\\u003c',''],
+            [r'/em',''],
             [r'<br',''],
+            [r'\\u003ekj',''],
+            [r'u003e',''],
+            [r'"',''],
+            [r'\\u0026','\''],
             [r'&mdash;','—'],
             [r';',''],
             [r'&#;','\''],
@@ -25,6 +45,22 @@ class clean:
             [r'.&nbsp;',','],
             [r'<strong',''],
             [r'</strong',''],
+            [r'\\',''],
+            [r'/pu',''],
+            [r'/p',''],
+            [r'quot',''],
+            [r'\bbr\b',''],
+            [r'\'ldquo',''],
+            [r'\'lde','T'],
+            [r'\'',''],
+            [r'rsquo',''],
+            [r'rdquo',''],
+            [r'#39',''],
+            [r',',''],
+            [r'\.',''],
+            [r'\?',''],
+            [r'\!',''],
+            [r'--',''],
         ]
         self.preprocess()
         self.tokenize()
@@ -37,9 +73,14 @@ class clean:
                 row['contents'] = re.sub(pattern[0], pattern[1], row['contents'])
         
     def substitute(self, list_of_text):
+        #list_of_text = self.formatter(list_of_text)
         for _, row in self.df:
             for text in list_of_text:
                 row['contents'] = re.sub(text[0], text[1], row['contents'])
+    
+    # add code here
+    def formatter(self):
+        pass
         
     def find(self, pattern):
         self.expression = r'\b{}\b'.format(pattern)  # Regular expression pattern to match the word or words
@@ -60,4 +101,3 @@ class clean:
             self.df.to_csv(csv_file_path)
         else:
             print('Must be a valid filename that ends with .csv')
-            
