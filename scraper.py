@@ -3,7 +3,6 @@ January 23, 2024 7pm
 '''
 
 import requests
-import re
 import pandas as pd
 from nltk.tokenize import RegexpTokenizer
 import os
@@ -46,6 +45,14 @@ class scrape:
             except:
                 raise Exception("No File Found: {}".format(sites))
             self.sites_to_scrape = self.tempdf.iloc[:, 0].tolist()
+        self.html_title_text_finder = '<div class="MuiTypography-root MuiTypography-h1 css-bz0a2f'
+        self.html_author_text_finder = '<div class="MuiTypography-root MuiTypography-h5 MuiTypography-gutterBottom css-vldcmf'
+        self.html_content_text_finder = '<div class="MuiTypography-root MuiTypography-h5 MuiTypography-gutterBottom css-m121yt"'
+        self.html_date_text_finder = '<div class="MuiTypography-root MuiTypography-h5 css-37gmgr'
+        self.title_ender = '</div'
+        self.author_ender = '</div'
+        self.content_ender = '</div'
+        self.date_ender = '</div'
         self.header = {'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36'}
         self.df = None
         self.html_content = []
@@ -58,10 +65,9 @@ class scrape:
         # Call methods that scrapes, pre-clean, build the final dataframe
         self.html_content_scrape()
         self.scrape_essential_content()
-        self.tokenizer = RegexpTokenizer(r'\w+|[^\w\s]+')
         # Tokenize the contents and build the dataframe
         self.contents = [text.strip() for text in self.contents]
-        self.tokens = [self.tokenizer.tokenize(text) for text in self.contents]
+        self.tokens = [text.split() for text in self.contents]
         self.build_df()
         
     def html_content_scrape(self):
@@ -95,60 +101,66 @@ class scrape:
             contents = ''
             dates = ''
             temp_str = ''
+            tag = ''
             
             # Initialize flags for important html contents
             is_title = False
             is_author = False
             is_content = False
             is_date = False
-            number_dates = 1
+            is_tag = False
             
             # Iterate over the whole html content while saving the important parts
             for char in content:
-                # If a probable important html content
-                if char  == '>' or is_title or is_author or is_content or is_date:
-                    # If a character is probably a closing to a code in html
-                    if char == '>':
-                        start_date_match = temp_str[-len('<span class="date-posted"'):]
-                        start_content_match = temp_str[-len('<p'):]
-                        start_author_match = temp_str[-len('<span class="editor"'):]
-                        start_title_match = temp_str[-len('<h1 class="news-title"'):]
-                        end_date_match = dates[-len('</span'):]
-                        end_content_match = contents[-len('</p'):]
-                        end_author_match = temp_str[-len('</span'):]
-                        end_title_match = temp_str[-len('</h1'):]
-                        
-                        # If a start of an important html content
-                        if start_title_match == '<h1 class="news-title"':
-                            is_title = not is_title
-                        if start_author_match == '<span class="editor"':
-                            is_author = not is_author
-                        if start_content_match == '<p':
-                            is_content= not is_content
-                            if end_content_match == '</p':
-                                contents = contents[:len(contents)-3]
-                        if start_date_match == '<span class="date-posted"'and number_dates <= 2:
-                            is_date= not is_date
-                            number_dates += 1
-                            if end_date_match == '</span':
-                                dates = dates[:len(dates)-6]
-                            
-                        # If an end of an important html content, append then re-initialize
-                        if start_title_match == True and end_title_match == '</h1':
-                            is_title = not is_title
-                        if start_author_match == True and end_author_match == '</span':
-                            is_author = not is_author
-                            
+                # If character is in html tag and not part of other important content
+                if char == '<' and not is_date and not is_content and not is_author and not is_title:
+                    is_tag = not is_tag
+                # Else ff character is in html tag and not part of other important content
+                elif char == '<' and (is_date or is_content or is_author or is_title):
+                    is_title = False
+                    is_author = False
+                    is_content = False
+                    is_date = False
+                    is_tag = False
+                # If character is end of html tag and not part of other important content
+                if char == '>' and (not is_date or not is_content or not is_author or not is_title) and is_tag:
+                    # reset tag value
+                    tag = ''
+                    is_tag = not is_tag
+                    continue
+                # If part of an important content
+                if (is_date or is_content or is_author or is_title) and not is_tag:
                     # If a character is an important html content, append
-                    elif is_title:
+                    if is_title:
                         title += char
+                        continue
                     elif is_author:
                         authors += char
+                        continue
                     elif is_content:
                         contents += char
+                        continue
                     elif is_date:
                         dates += char
-                # Else append the character
+                        continue
+                # Check if its an html tag of an important content:
+                if is_tag:
+                    tag += char
+                    if char == 'p' and (tag[-1] == '<'):
+                        is_content = not is_content
+                    # If no important tag is found yet keep checking
+                    if not is_title or not is_author or not is_date or not is_content:
+                        if tag == self.html_title_text_finder:
+                            is_title = not is_title
+                            continue
+                        if tag == self.html_author_text_finder and not is_author:
+                            is_author = not is_author
+                            continue
+                        if tag == self.html_date_text_finder and not is_date:
+                            is_date = not is_date
+                            continue
+                        if tag == self.html_content_text_finder and not is_content:
+                            is_content = not is_content
                 else:
                     temp_str += char
             
@@ -170,6 +182,13 @@ class scrape:
             'content_tokens':self.tokens
         }
         self.df = pd.DataFrame(data)
+        print(self.df['titles'])
+        print(self.df['authors'])
+        print(self.df['date'])
+        print(self.df['contents'])
+
+    def return_copy(self):
+        return self.df.copy()
                 
     def save(self, filename):
         # If the filename is valid, save into csv file
@@ -183,3 +202,6 @@ class scrape:
             self.df.to_csv(csv_file_path)
         else:
             print('Must be a valid filename that ends with .csv')
+
+
+x = scrape('sites.csv')

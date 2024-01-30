@@ -14,29 +14,32 @@ from cleaner import clean
 
 app = Flask(__name__)
 
+news_scraper = None
+
 @app.route('/') 
 def home():
     return render_template('index.html')
 
 @app.route('/scrape', methods=['POST','GET'])
 def scraper():
-    
     if request.method == 'POST' or request.method == 'GET':
         sites = request.form.get('sites_to_scrapes')  # get the csv or link from the form in index.html 
+        global news_scraper 
         news_scraper = scrape(sites)  # scrape the news using the scrape class
-        scraped_data = news_scraper.df.to_dict(orient='records')  # dataframe to dictionary
-        #title = scraped_data.get("titles")
-        #dates = scraped_data.get('date')
+        scraped_data = news_scraper.return_copy().to_dict(orient='records')  # dataframe to dictionary
         return render_template("functions.html", data=scraped_data)
-             #jsonify(scraped_data)  # return the scraped_data as JSON
         
 @app.route('/extract')
 def extract():
     return render_template('extract.html')
 
-@app.route('/functions')
+@app.route('/functions', methods=['POST'])
 def func():
-    return render_template('functions.html')
+    if request.method == 'POST':
+        subs = request.form.get('substitute_words') # get the words to be substituted
+        find = request.form.get('words_to_find')    # get the words to be find
+
+        return render_template('functions.html')
 
 @app.route('/tutorial')
 def tutorial():
