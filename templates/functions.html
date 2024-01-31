@@ -10,16 +10,16 @@
 
 <div class="upper-function-container">
     <div class="functions">
-        <form method="post"></form>
-        <h3>Find Words Here:</h3>
+        <form action="/subsfind"method="post">
+            <h3>Find Words Here:</h3>
             <input type="text" name='words_to_find' autofocus autocomplete="off" placeholder=''>
             <button type="submit" class="search-button" href="#">Search</button>
         </form>
     </div>
     <div class="functions">
-        <form method="post"></form>
-        <h3>Subsitute Words:</h3>
-            <input type="text" name='substitute_words' autofocus autocomplete="off" placeholder="(Mother:Father), (Dog:Cat)">
+        <form action="/subsfind" method="post">
+            <h3>Subsitute Words:</h3>
+            <input type="text" name='substitute_words' autofocus autocomplete="off" placeholder="{{ error_message or '(In:Out), (Orig:Sub)' }}">
             <button class="change-button" type="submit" href="#">Change</button>
         </form>
     </div>      
@@ -46,10 +46,12 @@
 {% block after_box_content %} 
 <div class="save-option-container">
     <div class="save-option">
-        <h3>Save your result as: </h3>
-        <input type="text" placeholder="Output.csv">
-        <button class="download">Download Result</button>
-        <button class="copy">Copy to Clipboard</button>
+        <form action="/downloading_data_path" method="post">
+            <h3>Save your result as: </h3>
+            <input type="text" name="file" placeholder="Output.csv">
+            <button class="download" type="submit">Download Result</button>
+            <button class="copy">Copy to Clipboard</button>
+        </form>
     </div>
 </div>
 {% endblock %}
