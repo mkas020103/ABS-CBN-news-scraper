@@ -127,7 +127,7 @@ class scrape:
                 # If character is in html tag and not part of other important content 
                 if char == '<' and not is_date and not is_content and not is_author and not is_title:
                     is_tag = not is_tag
-                # Else if character is in html tag and not part of other important content
+                # Else if character is in html tag and part of other important content
                 elif char == '<' and (is_date or is_content or is_author or is_title):
                     is_title = False
                     is_author = False

@@ -124,7 +124,10 @@ class clean:
     def find(self, pattern):
         self.expression = r'\b{}\b'.format(pattern)  # Regular expression pattern to match the word or words
         self.filtered_comments = self.df[self.df['contents'].str.contains(self.expression, case=False, regex=True)]
-        self.df=self.filtered_comments
+        if not self.filtered_comments.empty:
+            self.df=self.filtered_comments
+        else:
+            self.df
 
     def tokenize(self):
         self.tokens = [self.tokenizer.tokenize(text) for text in self.df['contents']]
