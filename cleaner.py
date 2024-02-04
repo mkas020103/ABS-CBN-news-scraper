@@ -57,6 +57,11 @@ class clean:
             [r'body_html_mdle',''],
             [r'&#x27',''],
             [r'\(miff\)',''],
+            [r'\b\w*dataivske\w*\b',''],
+            [r'\b\w*ivsplayer\w*\b',''],
+            [r'\b\w*datawsci\w*\b',''],
+            [r'\b\w*dataws\w*\b',''],
+            [r'\b\w*datascay\w*\b',''],
         ]
         self.preprocess()
         self.tokenize()

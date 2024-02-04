@@ -107,8 +107,6 @@ class scrape:
             dates = ''
             temp_str = ''
             tag = ''
-
-            # or temp_str[-self.len_greater:] == self.greater_symbol)  or temp_str[-self.len_lesser:] == self.lesser_symbol)
             
             # Initialize flags for important html contents
             is_title = False
@@ -126,10 +124,10 @@ class scrape:
                 overall_content_start = temp_str[-len(self.top_content):]
                 overall_content_end = temp_str[-len(self.lower_content):]
                 
-                # If character is in html tag and not part of other important content
+                # If character is in html tag and not part of other important content 
                 if char == '<' and not is_date and not is_content and not is_author and not is_title:
                     is_tag = not is_tag
-                # Else ff character is in html tag and not part of other important content
+                # Else if character is in html tag and not part of other important content
                 elif char == '<' and (is_date or is_content or is_author or is_title):
                     is_title = False
                     is_author = False
